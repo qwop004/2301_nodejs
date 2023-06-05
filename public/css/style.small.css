@@ -1,0 +1,37 @@
+/*
+ * Dev.to에서: https://dev.to/ljcdev/easy-hamburger-menu-with-js-2do0
+ */
+
+#menu-button {
+  display: block;
+}
+
+.menu {
+  position: fixed;
+  transform: translateY(-100%);
+  transition: transform 0.2s;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background: black;
+  color: white;
+  padding-top: 4rem;
+}
+
+.menu a {
+  color: white;
+}
+
+nav .menu-item {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 150%;
+  line-height: 1.5;
+}
+
+.show-menu {
+  transform: translateY(0);
+}

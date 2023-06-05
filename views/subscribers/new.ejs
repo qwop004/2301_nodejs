@@ -1,0 +1,76 @@
+<!-- views/contact.ejs (p. 180) -->
+
+<!--
+  Listing 16.6 (p. 232)
+  새로운 구독자를 추가하는 뷰
+-->
+
+<!-- MAIN 페이지 내용 -->
+<main class="">
+  <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-3">
+      <div class="col-lg-7 text-center text-lg-start mb-3">
+        <figure>
+          <img
+            src="https://cdn.pixabay.com/photo/2015/08/07/06/28/transportation-879026_960_720.jpg"
+          />
+        </figure>
+        <h1 class="display-4">Contact Us</h1>
+        <p class="lead col-lg-10 fs-4">Get in touch to find out more.</p>
+      </div>
+
+      <div class="col-md-10 mx-auto col-lg-5 mb-5">
+        <form
+          class="p-4 p-md-5 border rounded-3 bg-light"
+          action="/contact"
+          method="post"
+        >
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingName"
+              placeholder="Name"
+              name="name"
+            />
+            <label for="floatingName">이름</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              id="floatingInput"
+              placeholder="name@example.com"
+              name="email"
+            />
+            <label for="floatingInput">이메일</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInput"
+              placeholder="010-5555-5555"
+              pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+              name="phoneNumber"
+            />
+            <label for="floatingInput">전화번호</label>
+          </div>
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="true" name="newsletter" />
+              뉴스레터 구독
+            </label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary ut-red" type="submit">
+            신청하기
+          </button>
+          <hr />
+          <small class="text-muted"
+            >다른 사람들과 이메일을 공유하지 않습니다.
+          </small>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>

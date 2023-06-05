@@ -1,0 +1,105 @@
+<!-- views/users/show.ejs -->
+
+<!--
+  Listing 19.5 (p. 283)
+  사용자 Show 테이블
+-->
+<main class="user-profile">
+  <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="pt-5">
+      <h1>User Data for <%= user.fullName %></h1>
+
+      <div class="row">
+        <div class="col col-lg-2">
+          <figure class="user-img mt-5 mb-5">
+            <img src="<%= user.profileImg || "https://via.placeholder.com/150"
+            %>" alt="Placeholder image" class="rounded-circle" />
+          </figure>
+        </div>
+        <div class="col col-lg-10">
+          <table class="table table-striped table-hover mt-5 mb-5">
+            <!-- 사용자 데이터를 보여주기 위한 테이블 추가 -->
+            <tbody>
+              <tr>
+                <th scope="col">Username</th>
+                <td><%= user.username %></td>
+              </tr>
+              <tr>
+                <th scope="col">Name</th>
+                <td><%= user.fullName %></td>
+              </tr>
+              <tr>
+                <th scope="col">Email</th>
+                <td><%= user.email %></td>
+              </tr>
+              <tr>
+                <th scope="col">Password</th>
+                <td><%= user.password %></td>
+              </tr>
+              <tr>
+                <th scope="col">Courses</th>
+                <td><%= user.courses %></td>
+              </tr>
+              <tr>
+                <th scope="col">Subscribed Account</th>
+                <td><%= user.subscribedAccount %></td>
+              </tr>
+              <tr>
+                <th scope="col">Created</th>
+                <td><%= user.createdAt %></td>
+              </tr>
+              <tr>
+                <th scope="col">Updated</th>
+                <td><%= user.updatedAt %></td>
+              </tr>
+              <tr>
+                <th scope="col">ID</th>
+                <td><%= user._id %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 구독자 계정 확인 -->
+      <% if (user.subscribedAccount) { %>
+      <h4 class="mt-5 text-center">
+        This user has a subscribed account:
+        <a href="/subscribers/<%= user.subscribedAccount %>">
+          <%= user.subscribedAccount.name %> </a
+        >.
+      </h4>
+      <% } %>
+
+      <!--
+        노트: 링크된 구독자 페이지가 제대로 동작하려면 이런 과정을 구독자를 위한 CRUD 함수 및
+        뷰의 생성에서도 동시에 따라야 할 것이다. Href 앵커 태그인 /subscribers/${user.susbcribedAccount}는
+        구독자의 show 페이지를 나타낸다.
+      -->
+
+      <!--
+        Listing 20.10 (p. 299)
+        CRUD 액션을 위한 링크 추가
+      -->
+      <div class="row">
+        <div class="col col-lg-10 offset-lg-2">
+          <!-- 프로필 페이지에서 사용자 계정의 편집 및 삭제를 위한 링크 추가 -->
+          <a href="/users" class="btn btn-primary">← Back to Users</a>
+          <a
+            href="/users/<%= user._id %>/edit"
+            class="btn btn-secondary"
+            role="button"
+            >✏️ Edit User</a
+          >
+          <a
+            href="/users/<%= user._id %>/delete?_method=DELETE"
+            onclick="return confirm('Are you sure you want to delete this record?')"
+            class="btn btn-danger"
+            role="button"
+            >🗑️ Delete User</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
