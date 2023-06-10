@@ -3,11 +3,10 @@
 <main class="">
   <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="pt-5 pb-5">
-      <h1>Subscribers</h1>
-      <p>Here are all the subscribers to our newsletter.</p>
+      <h1>Clubs</h1>
 
       <table class="table table-striped table-hover pb-5">
-        <thead>
+        <!-- <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">이미지</th>
@@ -16,27 +15,24 @@
             <th scope="col">전화번호</th>
             <th scope="col">뉴스레터 구독자</th>
           </tr>
-        </thead>
+        </thead> -->
         <tbody>
           <% subscribers.forEach((s, i) => { %>
-          <tr>
-            <td><%= i+1 %></td>
             <td>
-              <figure class="subscriber-img">
-                <img src="<%= s.profileImg %>" />
-              </figure>
-            </td>
-            <td><%= s.name %></td>
-            <td><%= s.email %></td>
-            <td><%= s.phoneNumber %></td>
-            <td>
+              <figure class="clubs-img">
+                <img src="<%= s.clubImage %>" />
+              </figure><br>
+              <li><%= s.clubName %></li><br>
+              <li><a href="<%= s.clubSite %>">Club Site</a></li><br>
+              <!-- <li><%= s.phoneNumber %></li><br> -->
               <% if (s.newsletter) { %>
-              <span class="fas fa-check">✅</span>
-              <% } else { %>
-              <span class="fas fa-times">❌</span>
-              <% } %>
+                <li><span class="fas fa-check">✅</span></li><br>
+                <% } else { %>
+                  <li><span class="fas fa-times">❌</span></li><br>
+                <% } %>
             </td>
-          </tr>
+            <% if ((i+1) % 4 == 0) { %>
+              </tr><% } %>
           <% }); %>
         </tbody>
       </table>

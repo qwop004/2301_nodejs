@@ -12,9 +12,9 @@
  * 새로운 형식을 다른 모델에 적용할 것이다.
  */
 const mongoose = require("mongoose"),
-  { Schema } = mongoose,
-  bcrypt = require("bcrypt"), // Lesson 23 - bcrypt 라이브러리를 요청
   Subscriber = require("./Subscriber"), // 구독자 모델 요청
+  { Schema } = mongoose,
+  bcrypt = require("bcrypt"), // Lesson 23 - bcry pt 라이브러리를 요청
   userSchema = Schema(
     // 사용자 스키마 생성
     {
@@ -42,7 +42,7 @@ const mongoose = require("mongoose"),
         lowercase: true,
         unique: true,
         trim: true,
-      },
+      }, 
       phoneNumber: {
         type: String,
         trim: true,

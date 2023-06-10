@@ -6,16 +6,16 @@
 
     <!-- @TODO: -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Final Project | <%= title %></title> <!-- 타이틀이 변수받아 출력하는 거임 -->
+    <title>Final Project | <%= title %></title>
     <!-- @TODO: title태그를 완성하십시오 -->
 
-    <meta name="author" content="Taemin" />
+    <meta name="author" content="Aaron" />
     <!-- @TODO: 자기 이름을 작성하십시오 -->
 
-    <!-- @TODO: CSS 파일에 대한 link테그를 완성하십시오 --> 
-    <link rel="stylesheet" href="/css/style.css" /> <!-- 이거-->
+    <!-- @TODO: CSS 파일에 대한 link테그를 완성하십시오 -->
+    <link rel="stylesheet" href="/css/style.css" />
     <!-- Compiled: https://codepen.io/fionnachan/pen/EvaqOB -->
-                                                                  <!-- <link rel="stylesheet" href="css/confetti.css" />  -->
+    <!-- <link rel="stylesheet" href="css/confetti.css" /> -->
     <link
       rel="stylesheet"
       media="(max-width: 768px)"
@@ -24,22 +24,14 @@
 
     <!-- @TODO: -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
-                                                                    <!-- 미사용 <link rel="stylesheet" href="css/aaronkr.css" /> -->
+    <!-- <link rel="stylesheet" href="/css/aaronkr.css" /> -->
   </head>
-
-
   <body>
-    
-    <%- include('_partials/_header') %>
-    <!--
-      Listing 22.4 (p. 329)
-      layout.ejs에서 플래시 메시지 추가
-    -->
-    <%- include('_partials/_flashMsg') %>
-    <%- body %> 
-    <%- include('_partials/_footer') %>
+    <%- include('_partials/_header') %> <%- body %> <%-
+    include('_partials/_footer') %>
 
-
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="/js/jquery-3.7.0.slim.js"></script>
     
     <!-- Popper Development version -->
@@ -53,12 +45,10 @@
 
     <!-- @TODO: JS 파일에 대한 script테그를 완성하십시오 -->
     <script src="/js/functions.js"></script>
-    
   </body>
 
   <!--
     [노트] 레이아웃 파일은 방문하는 모든 페이지상에서 렌더링된다.
     한 번 < %- body % >의 전후로 HTML 콘텐츠를 추가해보라. 
     모든 페이지에 추가 내용이 반영될 것이다.
--->
-</html>
+--></html>

@@ -39,23 +39,117 @@ body {
 span.ut-red {
   background: #ab3135;
   color: white;
-  padding: 2px 5px;
+  padding: 0px 10px;
 }
 
-#index {
-  background: url(https://cdn.pixabay.com/photo/2019/10/04/12/05/train-4525444_960_720.jpg)
-    no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  bottom: 0;
+/***********************************************************************************************************/
+/* * {
+  box-sizing: border-box;
+} */
+
+#taemin_index{
+  position: relative;
+  font-size: 100px;
+  margin-top: 20%;
+}
+
+.page-title {
+  font-size: 100px;
+}
+.size-up{
+  font-size:150px;
+  font-weight: bold;
+  letter-spacing: -15px;
+  line-height: 80%;
+}
+
+
+.video-background {
+  background: #000;
+  position: fixed;
   top: 0;
   right: 0;
+  bottom: 0;
   left: 0;
-  position: absolute;
-  z-index: -1;
+  z-index: -99;
 }
+
+.video-foreground,
+.video-background iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#vidtop-content {
+  top: 0;
+  color: #fff;
+}
+
+.vid-info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 33%;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  padding: 1rem;
+  font-family: Avenir, Helvetica, sans-serif;
+}
+
+.vid-info h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.vid-info a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.5);
+  transition: .6s background;
+  border-bottom: none;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .video-foreground {
+    height: 300%;
+    top: -100%;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .video-foreground {
+    width: 300%;
+    left: -100%;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .vid-info {
+    width: 50%;
+    padding: .5rem;
+  }
+
+  .vid-info h1 {
+    margin-bottom: .2rem;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .vid-info .acronym {
+    display: none;
+  }
+}
+
+/***********************************************************************************************************/
 
 header {
   background-color: white;
@@ -74,12 +168,13 @@ header {
 }
 
 .logo {
-  margin: 0 5px 0 20px; /* Aaron */
+  margin: 0 0 0 20px; /* Aaron */
   float: left;
 }
 
 .logo img {
-  display: block;
+  display: true;
+  margin: 0 0 8px 0;
 }
 
 .site-title {
@@ -95,12 +190,12 @@ nav.menu {
 
 nav .menu-item,
 #menu-button {
-  /* Aaron */
-  font-size: 16px;
-  padding: 8px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 12px 10px;
   float: left;
   line-height: 1;
-  cursor: pointer; /* Aaron */
+  cursor: pointer;
   color: #ab3135;
 }
 
@@ -126,11 +221,11 @@ nav a {
 }
 
 .logo a {
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: 1;
 }
 
-#menu-button {
+#menu-button {w
   position: relative;
   z-index: 1050;
   /* right: 20px; */
@@ -161,14 +256,14 @@ nav a {
 
 figure img {
   max-width: 100%;
-  border-radius: 20px;
+  /* border-radius: 20px; */
 }
 
-figure.subscriber-img,
+figure.clubs-img,
 figure.user-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 40px;
+  width: 300px;
+  height: 300px;
+  /* border-radius: 5px; */
   margin: 0;
   overflow: hidden;
 }

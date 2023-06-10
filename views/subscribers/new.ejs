@@ -12,17 +12,17 @@
       <div class="col-lg-7 text-center text-lg-start mb-3">
         <figure>
           <img
-            src="https://cdn.pixabay.com/photo/2015/08/07/06/28/transportation-879026_960_720.jpg"
+            src="https://cdn.pixabay.com/photo/2015/01/26/22/40/child-613199_1280.jpg"
           />
         </figure>
-        <h1 class="display-4">Contact Us</h1>
-        <p class="lead col-lg-10 fs-4">Get in touch to find out more.</p>
+        <h1 class="display-4">Add New Club</h1>
+        <p class="lead col-lg-10 fs-4">Add your team to the MLS team list!</p>
       </div>
 
       <div class="col-md-10 mx-auto col-lg-5 mb-5">
         <form
           class="p-4 p-md-5 border rounded-3 bg-light"
-          action="/contact"
+          action="/subscribers/create"
           method="post"
         >
           <div class="form-floating mb-3">
@@ -31,9 +31,9 @@
               class="form-control"
               id="floatingName"
               placeholder="Name"
-              name="name"
+              name="clubName"
             />
-            <label for="floatingName">이름</label>
+            <label for="floatingName">Club Name</label>
           </div>
           <div class="form-floating mb-3">
             <input
@@ -43,23 +43,34 @@
               placeholder="name@example.com"
               name="email"
             />
-            <label for="floatingInput">이메일</label>
+            <label for="floatingInput">eMail</label>
           </div>
           <div class="form-floating mb-3">
             <input
               type="text"
               class="form-control"
               id="floatingInput"
-              placeholder="010-5555-5555"
-              pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
-              name="phoneNumber"
+              placeholder="www.example.com"
+            
+              name="clubSite"
             />
-            <label for="floatingInput">전화번호</label>
+            <label for="floatingInput">WebSite</label>
           </div>
           <div class="checkbox mb-3">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInput"
+                placeholder="URL"
+                name="clubImage"
+              />
+              <label for="floatingInput">Profile Image</label>
+            </div>
+            <div class="checkbox mb-3">
             <label>
               <input type="checkbox" value="true" name="newsletter" />
-              뉴스레터 구독
+              뉴스레터 구독(이메일 입력)
             </label>
           </div>
           <button class="w-100 btn btn-lg btn-primary ut-red" type="submit">

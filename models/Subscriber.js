@@ -6,28 +6,28 @@
  * 구독자 스키마에 유효성 평가자 추가
  */
 const mongoose = require("mongoose"),
-  subscriberSchema = mongoose.Schema(
+  clubSchema = mongoose.Schema(
     {
-      name: {
+      clubName: {
         // name 속성 요청
         type: String,
         required: true,
       },
-      email: {
+      clubSite: {
         // email 속성 요청 lowercase 속성 추가
         type: String,
         required: true,
         lowercase: true,
         unique: true,
       },
-      phoneNumber: {
-        // phoneNumber 속성 요청 (zipCode 대신)
-        type: String,
-      },
-      newsletter: {
-        type: Boolean,
-      },
-      profileImg: {
+      // phoneNumber: {
+      //   // phoneNumber 속성 요청 (zipCode 대신)
+      //   type: String,
+      // },
+      // newsletter: {
+      //   type: Boolean,
+      // },
+      clubImage: {
         type: String,
       },
       courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
@@ -47,24 +47,24 @@ const mongoose = require("mongoose"),
  * 스키마에 인스턴스 메소드 추가
  */
 // 구독자의 Full info를 구하기 위한 인스턴스 메소드 추가
-subscriberSchema.methods.getInfo = function () {
+clubSchema.methods.getInfo = function () {
   return `Name: ${this.name} Email: ${this.email} Phone: ${this.phoneNumber}`;
 };
 
 // 전화번호를 사용하여 구독자를 찾는 인스턴스 메소드 추가 (findLocalSubscribers 대신)
-subscriberSchema.methods.findPhone = function () {
-  return this.model("Subscriber")
+clubSchema.methods.findPhone = function () {
+  return this.model("clubs")
     .find({ phoneNumber: this.phoneNumber })
     .exec();
 };
 
 // email 속성을 소문자로 변환하는 인스턴스 메소드 추가
-subscriberSchema.methods.lowercaseEmail = function () {
+clubSchema.methods.lowercaseEmail = function () {
   this.email = this.email.toLowerCase();
   return this.email;
 };
 
-module.exports = mongoose.model("Subscriber", subscriberSchema);
+module.exports = mongoose.model("clubs", clubSchema);
 
 /**
  * 주의: 앞서 기술했지만, Mongoose를 갖고 메소드를 사용하면 ES6의 화살표 함수를 완전히 사용할 수 없다.
