@@ -79,7 +79,6 @@ userSchema.virtual("fullName").get(function () {
   return `${this.name.first} ${this.name.last}`;
 }); // 사용자의 풀 네임을 얻기 위한 가상 속성 추가
 
-// module.exports = mongoose.model("User", userSchema);
 
 /**
  * 노트: 이 책을 쓰는 시점에 Mongoose 메소드는 더 이상 의존하지 않는 어휘 this를
@@ -91,32 +90,9 @@ userSchema.virtual("fullName").get(function () {
  * 노트: save에서의 pre 훅은 사용자가 저장될 때마다 실행된다. 다시 말하먼 Mongoose의 save
  * 메소드를 통해 생성 또는 업데이트 후에 실행된다.
  */
+
 userSchema.pre("save", function (next) {
   let user = this; // 콜백에서 함수 키워드 사용
-
-  if (user.subscribedAccount === undefined) {
-    // 기존 Subscriber 연결을 위한 조건 체크 추가
-    Subscriber.findOne({
-      email: user.email,
-    }) // Single Subscriber를 위한 퀴리
-      .then((subscriber) => {
-        user.subscribedAccount = subscriber; // 사용자와 구독자 계정 연결
-        next();
-      })
-      .catch((error) => {
-        console.log(`Error in connecting subscriber: ${error.message}`);
-        next(error); // 에러 발생 시 다음 미들웨어로 함수로 전달
-      });
-  } else {
-    next(); // 이미 연결 존재 시 다음 미들웨어로 함수 호출
-  }
-  /**
-   * @TODO: bcrypt 해싱
-   *
-   * Listing 23.4 (p. 340)
-   * user.js에서의 pre 훅 해싱
-   */
-
   bcrypt
     .hash(user.password, 10) // password * hash 횟수?
     .then(hash => {
@@ -131,27 +107,31 @@ userSchema.pre("save", function (next) {
 
 userSchema.pre("save", function (next) {
   let user = this; // 콜백에서 함수 키워드 사용
-  /**
-   * Listing 19.4 (p. 281)
-   * user.js에 pre("save") 훅 추가
-   */
   if (user.subscribedAccount === undefined) {
-    // 기존 Subscriber 연결을 위한 조건 체크 추가
-    Subscriber.findOne({
-      email: user.email,
-    }) // Single Subscriber를 위한 퀴리
-      .then((subscriber) => {
-        user.subscribedAccount = subscriber; // 사용자와 구독자 계정 연결
-        next();
-      })
-      .catch((error) => {
-        console.log(`Error in connecting subscriber: ${error.message}`);
-        next(error); // 에러 발생 시 다음 미들웨어로 함수로 전달
-      });
+  // 기존 Subscriber 연결을 위한 조건 체크 추가
+  Subscriber.findOne({
+    email: user.email,
+  }) // Single Subscriber를 위한 퀴리
+    .then((subscriber) => {
+      user.subscribedAccount = subscriber; // 사용자와 구독자 계정 연결
+      next();
+    })
+    .catch((error) => {
+      console.log(`Error in connecting subscriber: ${error.message}`);
+      next(error); // 에러 발생 시 다음 미들웨어로 함수로 전달
+    });
   } else {
-    next(); // 이미 연결 존재 시 다음 미들웨어로 함수 호출
+  next(); // 이미 연결 존재 시 다음 미들웨어로 함수 호출
   }
-});
+}); 
+  /**
+   * @TODO: bcrypt 해싱
+   *
+   * Listing 23.4 (p. 340)
+   * user.js에서의 pre 훅 해싱
+   */
+
+
 
 /**
  * @TODO: passwordComparison 메소드 추가
