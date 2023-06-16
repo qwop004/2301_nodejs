@@ -14,22 +14,19 @@ const express = require("express"), // express를 요청
 
 // controllers 폴더의 파일을 요청
 const pagesController = require("./controllers/pagesController"),
-     subscribersController = require("./controllers/subscribersController"),
-     usersController = require("./controllers/usersController"),
-//   coursesController = require("./controllers/coursesController"),
-//   talksController = require("./controllers/talksController"),
-//   trainsController = require("./controllers/trainsController"),
+      subscribersController = require("./controllers/subscribersController"),
+      usersController = require("./controllers/usersController"),
       errorController = require("./controllers/errorController");
 
 const router = express.Router(); // Express 라우터를 인스턴스화
 app.use("/", router); // 라우터 객체 사용,, 라우터를 express 애플리케이션에 추가 (미들웨어 함수와 라우트 추가 할것)
 
-// const methodOverride = require("method-override"); // method-override 미들웨어를 요청
-// router.use(
-//   methodOverride("_method", {
-//     methods: ["POST", "GET"],
-//   })
-// ); // method-override 미들웨어를 사용
+const methodOverride = require("method-override"); // method-override 미들웨어를 요청
+router.use(
+  methodOverride("_method", {
+    methods: ["POST", "GET"],
+  })
+); // method-override 미들웨어를 사용
 
 /**
  * Listing 22.1 (p. 325)
@@ -37,8 +34,8 @@ app.use("/", router); // 라우터 객체 사용,, 라우터를 express 애플�
 //  */
 const expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
-  connectFlash = require("connect-flash");
-//   expressValidator = require("express-validator"); // Lesson 23 - express-validator 미들웨어를 요청
+  connectFlash = require("connect-flash"),
+  expressValidator = require("express-validator"); // Lesson 23 - express-validator 미들웨어를 요청
 
 router.use(cookieParser("secret_passcode")); // cookie-parser 미들웨어를 사용하고 비밀 키를 전달
 router.use(
@@ -54,6 +51,15 @@ router.use(
 );
 router.use(connectFlash()); // connect-flash 미들웨어를 사용
 
+const passport = require('passport');// passport를 요청
+router.use(passport.initialize());  // passport를 초기화
+router.use(passport.session()); // passport가 Express.js 내 세션을 사용하도록 설정
+
+
+const User = require("./models/User"); // User 모델을 요청
+  passport.use(User.createStrategy()); // User 모델의 인증 전략을 passport에 전달
+  passport.serializeUser(User.serializeUser()); // User 모델의 직렬화 메서드를 passport에 전달
+  passport.deserializeUser(User.deserializeUser()); // User 모델의 역직렬화 메서드를 passport에 전달
 // /**
 //  * Listing 22.2 (p. 327)
 //  * 응답상에서 connectFlash와 미들웨어와의 연계
@@ -61,8 +67,12 @@ router.use(connectFlash()); // connect-flash 미들웨어를 사용
 router.use((req, res, next) => {
   // 응답 객체상에서 플래시 메시지의 로컬 flashMessages로의 할당
   res.locals.flashMessages = req.flash(); // flash 메시지를 뷰에서 사용할 수 있도록 설정
+  res.locals.loggedIn = req.isAuthenticated();  // 로그인 여부를 확인하는 불리언 값을 로컬 변수에 추가
+  res.locals.currentUser = req.user;  // 현재 사용자를 로컬 변수에 추가
   next();
 });
+
+
 
 /**
  * =====================================================================
@@ -102,8 +112,8 @@ router.use(express.static("public"));
 router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
 
-// // express-validator의 추가
-// //router.use(expressValidator());
+// express-validator의 추가
+// router.use(expressValidator());
 
 // /**
 //  * =====================================================================
@@ -116,7 +126,6 @@ router.use(express.json());
 //  */
 router.get("/", pagesController.showHome); // 홈 페이지 위한 라우트 추가
 router.get("/about", pagesController.showAbout); // 코스 페이지 위한 라우트 추가
-router.get("/transportation", pagesController.showTransportation); // 교통수단 페이지 위한 라우트 추가
 
 // /**
 //  * @TODO: login 라우트 추가
@@ -124,34 +133,43 @@ router.get("/transportation", pagesController.showTransportation); // 교통수�
 //  * Listing 23.2 (p. 335)
 //  * app.js로 로그인 라우트를 추가
 //  */
-// router.get("/users/login", usersController.login);
-// router.post("/users/login", 
-//   usersController.auth, //authenticate,
-//   usersController.redirectView
-// );
+router.get("/users/login", usersController.login); // 로그인 폼을 보기 위한 요청 처리
+router.post(
+  "/users/login",
+  usersController.validate, // strips . from email (used in `create` so necessary in `login` too)
+  usersController.authenticate,
+  usersController.redirectView
+); // 로그인 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+router.get(
+  "/users/logout",
+  usersController.logout,
+  usersController.redirectView
+); 
+
+
 // /**
 //  * Users
 //  */
 router.get("/users", usersController.index, usersController.indexView); // index 라우트 생성
 router.get("/users/new", usersController.new); // 생성 폼을 보기 위한 요청 처리
 router.post(
-  "/users/create", 
-  // usersController.validate, // Listing 23.6 (p. 344) - 사용자 생성 라우트에 유효성 체크 미들웨어 추가
+  "/users/create",
+  usersController.validate, // strips . from email
   usersController.create,
   usersController.redirectView
 ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
 router.get("/users/:id", usersController.show, usersController.showView);
-// router.get("/users/:id/edit", usersController.edit); // viewing을 처리하기 위한 라우트 추가
-// router.put(
-//   "/users/:id/update",
-//   usersController.update,
-//   usersController.redirectView
-// ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.delete(
-//   "/users/:id/delete",
-//   usersController.delete,
-//   usersController.redirectView
-// );
+router.get("/users/:id/edit", usersController.edit); // viewing을 처리하기 위한 라우트 추가
+router.put(
+  "/users/:id/update",
+  usersController.update,
+  usersController.redirectView
+); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+router.delete(
+  "/users/:id/delete",
+  usersController.delete,
+  usersController.redirectView
+);
 
 // /**
 //  * Subscribers
@@ -183,79 +201,6 @@ router.delete(
   subscribersController.delete,
   subscribersController.redirectView
 );
-
-// /**
-//  * Courses
-//  */
-// router.get("/courses", coursesController.index, coursesController.indexView); // index 라우트 생성
-// router.get("/courses/new", coursesController.new); // 생성 폼을 보기 위한 요청 처리
-// router.post(
-//   "/courses/create",
-//   coursesController.create,
-//   coursesController.redirectView
-// ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.get("/courses/:id", coursesController.show, coursesController.showView);
-// router.get("/courses/:id/edit", coursesController.edit); // viewing을 처리하기 위한 라우트 추가
-// router.put(
-//   "/courses/:id/update",
-//   coursesController.update,
-//   coursesController.redirectView
-// ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.delete(
-//   "/courses/:id/delete",
-//   coursesController.delete,
-//   coursesController.redirectView
-// );
- 
-// /**
-//  * Talks
-//  */
-// // router.get("/talks", talksController.index, talksController.indexView); // 모든 토크를 위한 라우트 추가
-// // router.get("/talk/:id", talksController.show, talksController.showView); // 특정 토크를 위한 라우트 추가
-// router.get("/talks", talksController.index, talksController.indexView); // index 라우트 생성
-// router.get("/talks/new", talksController.new); // 생성 폼을 보기 위한 요청 처리
-// router.post(
-//   "/talks/create",
-//   talksController.create,
-//   talksController.redirectView
-// ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.get("/talks/:id", talksController.show, talksController.showView);
-// router.get("/talks/:id/edit", talksController.edit); // viewing을 처리하기 위한 라우트 추가
-// router.put(
-//   "/talks/:id/update",
-//   talksController.update,
-//   talksController.redirectView
-// ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.delete(
-//   "/talks/:id/delete",
-//   talksController.delete,
-//   talksController.redirectView
-// );
-
-// /**
-//  * Trains
-//  */
-// router.get("/trains", trainsController.index, trainsController.indexView); // index 라우트 생성
-// router.get("/trains/new", trainsController.new); // 생성 폼을 보기 위한 요청 처리
-// router.post(
-//   "/trains/create",
-//   trainsController.create,
-//   trainsController.redirectView
-// ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.get("/trains/:id", trainsController.show, trainsController.showView);
-// router.get("/trains/:id/edit", trainsController.edit); // viewing을 처리하기 위한 라우트 추가
-// router.put(
-//   "/trains/:id/update",
-//   trainsController.update,
-//   trainsController.redirectView
-// ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.delete(
-//   "/trains/:id/delete",
-//   trainsController.delete,
-//   trainsController.redirectView
-// );
-
-
 
 // =====================================================================
 // 미들웨어 함수로 에러 처리하기 (169쪽)

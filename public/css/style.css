@@ -378,3 +378,7 @@ td {
 .img-404 img {
   max-height: 50vh;
 }
+
+.container-right{
+  float: right;
+}

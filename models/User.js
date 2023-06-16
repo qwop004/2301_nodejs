@@ -5,7 +5,7 @@
  * Listing 18.1 (p. 259)
  * user.js에서 사용자 모델 생성
  */
-
+const passportLocalMongoose = require("passport-local-mongoose");
 /**
  * 노트: Mongoose Schema 객체에서 객체 소멸(object destruct)의 사용에 주목하자.
  * {Schema}는 Mongoose의 Schema 객체를 동일한 이름의 상수로 할당한다. 나중에 이
@@ -67,6 +67,10 @@ const mongoose = require("mongoose"),
     }
   );
 
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email"
+  });
+
 /**
  * Listing 18.2 (p. 260)
  * 사용자 모델에 가상 속성 추가
@@ -90,6 +94,22 @@ userSchema.virtual("fullName").get(function () {
 userSchema.pre("save", function (next) {
   let user = this; // 콜백에서 함수 키워드 사용
 
+  if (user.subscribedAccount === undefined) {
+    // 기존 Subscriber 연결을 위한 조건 체크 추가
+    Subscriber.findOne({
+      email: user.email,
+    }) // Single Subscriber를 위한 퀴리
+      .then((subscriber) => {
+        user.subscribedAccount = subscriber; // 사용자와 구독자 계정 연결
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error in connecting subscriber: ${error.message}`);
+        next(error); // 에러 발생 시 다음 미들웨어로 함수로 전달
+      });
+  } else {
+    next(); // 이미 연결 존재 시 다음 미들웨어로 함수 호출
+  }
   /**
    * @TODO: bcrypt 해싱
    *

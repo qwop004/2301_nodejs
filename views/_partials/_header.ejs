@@ -5,24 +5,38 @@
   <div class="container">
     <div class="container-left">
       <!-- 로고 -->
-      
       <figure class="logo">
         <a href="/">
           <img src="../image/MLS_logo.png" width="45" height="45">
           <h1 class="site-title">
-            
             <span class="ut-red">MLS</span>
-
+          </h1>
         </a>
       </figure>
 
-      <!-- 메뉴 -->
       <%- include('_navigation.ejs') %>
+      <div class="container-right">
+        <% if (loggedIn) { %>
+          <span>Logged in as</span>
+          <a
+            class = "btn btn-outline-secondary"
+            href="<%= `/users/${currentUser._id}` %>"
+            >
+            <%= currentUser.username %>
+          </a>
+          <a class="btn ut-red" href="/users/logout">Logout</a>
+        <% } else { %> 
+          <a 
+            class="btn btn-outline-secondary"
+            href = "/users/login">
+            Login
+          </a>
+          <a class="btn ut-red" href="/users/new">Register</a>
+          
+        <% } %>
+      </div>
     </div>
 
-    <!-- <div class="container-right">
-      <a href="/users/new" class="btn btn-outline-danger">Sign Up</a>
-      <a href="/users/login" class="btn btn-outline-primary">Login</a>
-    </div> -->
+
   </div>
 </header>
