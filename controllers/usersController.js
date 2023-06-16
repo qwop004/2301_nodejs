@@ -125,7 +125,7 @@ module.exports = {
       if(user){ //success
         req.flash(
           "success",
-          `${user/fullName}'s account created!`
+          `${user.fullName}'s account created!`
         );
         res.locals.redirect = "/users";
         next();
