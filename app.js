@@ -14,8 +14,8 @@ const express = require("express"), // express를 요청
 
 // controllers 폴더의 파일을 요청
 const pagesController = require("./controllers/pagesController"),
-      subscribersController = require("./controllers/subscribersController"),
-      usersController = require("./controllers/usersController"),
+     subscribersController = require("./controllers/subscribersController"),
+     usersController = require("./controllers/usersController"),
       errorController = require("./controllers/errorController");
 
 const router = express.Router(); // Express 라우터를 인스턴스화
@@ -56,10 +56,11 @@ router.use(passport.initialize());  // passport를 초기화
 router.use(passport.session()); // passport가 Express.js 내 세션을 사용하도록 설정
 
 
-const User = require("./models/User"); // User 모델을 요청
-  passport.use(User.createStrategy()); // User 모델의 인증 전략을 passport에 전달
-  passport.serializeUser(User.serializeUser()); // User 모델의 직렬화 메서드를 passport에 전달
-  passport.deserializeUser(User.deserializeUser()); // User 모델의 역직렬화 메서드를 passport에 전달
+const User = require('./models/User'); // User 모델을 요청
+ passport.use(User.createStrategy()); // User 모델의 인증 전략을 passport에 전달
+ passport.serializeUser(User.serializeUser()); // User 모델의 직렬화 메서드를 passport에 전달
+ passport.deserializeUser(User.deserializeUser()); // User 모델의 역직렬화 메서드를 passport에 전달
+
 // /**
 //  * Listing 22.2 (p. 327)
 //  * 응답상에서 connectFlash와 미들웨어와의 연계
@@ -71,6 +72,21 @@ router.use((req, res, next) => {
   res.locals.currentUser = req.user;  // 현재 사용자를 로컬 변수에 추가
   next();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -113,7 +129,7 @@ router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
 
 // express-validator의 추가
-router.use(expressValidator());
+router.use(expressValidator()); //최신버전 사용불가
 
 // /**
 //  * =====================================================================
@@ -133,18 +149,19 @@ router.get("/about", pagesController.showAbout); // 코스 페이지 위한 라�
 //  * Listing 23.2 (p. 335)
 //  * app.js로 로그인 라우트를 추가
 //  */
-router.get("/users/login", usersController.login); // 로그인 폼을 보기 위한 요청 처리
-router.post(
-  "/users/login",
-  usersController.validate, // strips . from email (used in `create` so necessary in `login` too)
-  usersController.authenticate,
+router.get("/users/login", usersController.login);
+router.post("/users/login", 
+  usersController.authenticate, //authenticate,
   usersController.redirectView
-); // 로그인 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+);
+
 router.get(
   "/users/logout",
-  usersController.logout,
+  usersController.logout, 
   usersController.redirectView
-); 
+);
+
+
 
 
 // /**
@@ -153,8 +170,8 @@ router.get(
 router.get("/users", usersController.index, usersController.indexView); // index 라우트 생성
 router.get("/users/new", usersController.new); // 생성 폼을 보기 위한 요청 처리
 router.post(
-  "/users/create",
-  usersController.validate, // strips . from email
+  "/users/create", 
+  usersController.validate, // Listing 23.6 (p. 344) - 사용자 생성 라우트에 유효성 체크 미들웨어 추가
   usersController.create,
   usersController.redirectView
 ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기

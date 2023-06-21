@@ -19,10 +19,4 @@ module.exports = {
       title: "About",
     });
   },
-  showTransportation: (req, res) => {
-    res.render("_pages/transportation", {
-      page: "transportation",
-      title: "Transportation",
-    });
-  },
 };

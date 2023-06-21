@@ -168,7 +168,7 @@ header {
 }
 
 .logo {
-  margin: 0 0 0 20px; /* Aaron */
+  margin: 0 0 0 20px;
   float: left;
 }
 
@@ -225,7 +225,7 @@ nav a {
   line-height: 1;
 }
 
-#menu-button {w
+#menu-button {
   position: relative;
   z-index: 1050;
   /* right: 20px; */
@@ -381,4 +381,9 @@ td {
 
 .container-right{
   float: right;
+}
+
+.loginForm{
+  margin: 0 5px 0 20px;
+  float: left;
 }
